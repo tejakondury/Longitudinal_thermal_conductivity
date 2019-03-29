@@ -1,5 +1,5 @@
 
-def pack(pore_vol,tt):
+def pack_irregular(pore_vol,tt):
 
     ##############################################################
     # Read from packing data
