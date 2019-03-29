@@ -88,7 +88,7 @@ mdb.models['Model-1'].materials['Matrix'].Conductivity(table=((cond_mat_var,), )
 mdb.models['Model-1'].Material(name='Pore')
 mdb.models['Model-1'].materials['Pore'].Conductivity(table=((cond_pore_var,), ))
 
- rectangle
+#rectangle
 s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__',
     sheetSize=200.0)
 g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
