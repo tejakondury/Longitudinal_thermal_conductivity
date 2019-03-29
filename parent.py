@@ -25,7 +25,7 @@ for tt in tems:
     print ('pore volume is', pore_vol)
 
     from pack import pack
-    pack(pore_vol,tt)
+    pack_irregular(pore_vol,tt)
 
     # Use temp to run temp dependent properties module
     from temp_variation import temp_variation
@@ -55,7 +55,7 @@ for tt in tems:
     	f.write("\n")
     	f.write("#PBS -l cput=00:30:00")
     	f.write("\n")
-    	f.write("cd /home/u23/tejakondury/SAPHYR3")
+    	f.write("cd /home/u23/tejakondury/RUBY1")
     	f.write("\n")
     	f.write("abaqus cae noGUI=no_pore.py ")
     	f.close()
@@ -88,7 +88,7 @@ for tt in tems:
     	f.write("\n")
     	f.write("#PBS -l cput=00:30:00")
     	f.write("\n")
-    	f.write("cd /home/u23/tejakondury/SAPHYR3")
+    	f.write("cd /home/u23/tejakondury/RUBY1")
     	f.write("\n")
        	f.write("abaqus cae noGUI=pore_cond.py")
 
