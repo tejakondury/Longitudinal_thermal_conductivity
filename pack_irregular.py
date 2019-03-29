@@ -48,9 +48,9 @@ def pack_irregular(pore_vol,tt):
     ######################################
     # calculate the present volume fraction
 
-    pr_vol_frac_pore=N_pore*(np.pi*a*b)
+    #pr_vol_frac_pore=N_pore*(np.pi*a*b)
 
-    print ('pore vol frac', pr_vol_frac_pore)
+    #print ('pore vol frac', pr_vol_frac_pore)
 
     ####################################3
 
@@ -63,7 +63,7 @@ def pack_irregular(pore_vol,tt):
 
     for i in xrange(N_fiber,N):
         a_new_mod.append((pore_vol*R[i]/(N_pore*np.pi))**0.5)
-        b_new_mod.append(a_new_mod/R[i])
+        b_new_mod.append(a_new_mod[i]/R[i])
 
    # print ('a is' ,a_new_mod )
    # print ('b is' ,b_new_mod )
