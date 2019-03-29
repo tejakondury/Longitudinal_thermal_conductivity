@@ -375,7 +375,7 @@ mdb.Job(name='Job%d'%tt, model='Model-1', description='', type=ANALYSIS,
 mdb.models['Model-1'].FieldOutputRequest(name='F-Output-2',
     createStepName='Step-1', variables=('IVOL', ))
 
-mdb.saveAs('/home/u23/tejakondury/SAPHYR3/mod%d' %tt)
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 ###########################################################################################
 
 #Submit job
