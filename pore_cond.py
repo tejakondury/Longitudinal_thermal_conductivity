@@ -88,20 +88,20 @@ mdb.models['Model-1'].materials['Matrix'].Conductivity(table=((cond_mat_var,), )
 mdb.models['Model-1'].Material(name='Pore')
 mdb.models['Model-1'].materials['Pore'].Conductivity(table=((cond_pore_var,), ))
 
-# Make a cube
+ rectangle
 s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__',
     sheetSize=200.0)
 g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
 H=1.0
 W=1.0
-D=1.0
 s.rectangle(point1=(0.0, 0.0), point2=(W, H))
-p = mdb.models['Model-1'].Part(name='Part-1', dimensionality=THREE_D,
+p = mdb.models['Model-1'].Part(name='Part-1', dimensionality=TWO_D_PLANAR,
     type=DEFORMABLE_BODY)
-mdb.models['Model-1'].parts['Part-1'].BaseSolidExtrude(depth=D, sketch= mdb.models['Model-1'].sketches['__profile__'])
+p = mdb.models['Model-1'].parts['Part-1']
+p.BaseShell(sketch=s)
 
 ###############################################################################
-# make pores
+
 k=0
 for i in xrange(N_fiber,N):
     p = mdb.models['Model-1'].parts['Part-1']
@@ -122,6 +122,7 @@ for i in xrange(N_fiber,N):
     p.PartitionFaceBySketch(faces=pickedFaces, sketch=s)
     k=k+1
 
+###############################################################################
 
 ######################################################################
 
@@ -349,7 +350,7 @@ refPoints1=dummy=(r1[val1], )
 region = regionToolset.Region(referencePoints=refPoints1)
 mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
     region=region, amplitude=UNSET, fixed=OFF,
-    distributionType=UNIFORM, fieldName='', magnitude=500.0)
+    distributionType=UNIFORM, fieldName='', magnitude=100.0)
 
 # Apply BC on the second dummy node as 0
 a = mdb.models['Model-1'].rootAssembly
@@ -403,7 +404,7 @@ comp=0;
 totVol = 0.0
 totFlux=0.0
 totTemp=0.0
-gradt=500.0
+gradt=100.0
 for j in xrange(0,len(vol.values)):
     setVol = vol.values[j].data
     totVol += setVol
