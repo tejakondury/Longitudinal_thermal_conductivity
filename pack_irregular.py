@@ -42,8 +42,7 @@ def pack_irregular(pore_vol,tt):
     for k in xrange(N_fiber,N_pore):
         a=((ctr[k][0]-pt1[k][0])**2+(ctr[k][1]-pt1[k][1])**2)**0.5
         b=((ctr[k][0]-pt2[k][0])**2+(ctr[k][1]-pt2[k][1])**2)**0.5
-
-        R[k]=a/b
+        R.append(a/b)
 
    # print 'The aspect ratio is =',R
     ######################################
@@ -63,8 +62,8 @@ def pack_irregular(pore_vol,tt):
     b_new_mod=[]
 
     for i in xrange(N_fiber,N):
-        a_new_mod[i]=(pore_vol*R[i]/(N_pore*np.pi))**0.5
-        b_new_mod[i]=a_new_mod/R[i]
+        a_new_mod.append((pore_vol*R[i]/(N_pore*np.pi))**0.5)
+        b_new_mod.append(a_new_mod/R[i])
 
    # print ('a is' ,a_new_mod )
    # print ('b is' ,b_new_mod )
