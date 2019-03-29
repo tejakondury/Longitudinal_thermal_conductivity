@@ -24,7 +24,7 @@ for tt in tems:
 
     print ('pore volume is', pore_vol)
 
-    from pack import pack
+    from pack_irregular import pack_irregular
     pack_irregular(pore_vol,tt)
 
     # Use temp to run temp dependent properties module
