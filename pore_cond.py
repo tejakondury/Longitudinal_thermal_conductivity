@@ -139,11 +139,11 @@ mdb.models['Model-1'].HomogeneousSolidSection(name='Section-3',
 # Create sets
 p = mdb.models['Model-1'].parts['Part-1']
 f = p.faces
-faces = f.findAt(((0.0, 0.0, 0.0), ))
-p.Set(faces=faces, name='Matrix')
+# Create a set of the entire region
+faces=f.getByBoundingBox(0.0,0.0,0.0,1.0,1.0,0.0)
+p.Set(faces=faces,name='Everything')
 
 # Create a set of the fibers
-
 
 # Create a set of the pores
 p = mdb.models['Model-1'].parts['Part-1']
@@ -153,6 +153,10 @@ for i in xrange(N_fiber,N):
 	faces += f.findAt(((ctr[i][0],ctr[i][1],0.0), ) )
 p.Set(faces=faces, name='Pore')
 
+#Create a set of matrix
+p = mdb.models['Model-1'].parts['Part-1']
+f = p.faces
+p.SetByBoolean(name='Matrix',operation=DIFFERENCE,sets=(p.sets['Everything'],p.sets['Pore'],))
 
 
 
