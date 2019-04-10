@@ -61,8 +61,8 @@ flag=1
 # Create material properties
 mdb.models['Model-1'].Material(name='Matrix')
 mdb.models['Model-1'].materials['Matrix'].Conductivity(table=((cond_mat_var,), ))
-mdb.models['Model-1'].Material(name='Pore')
-mdb.models['Model-1'].materials['Pore'].Conductivity(table=((cond_pore_var,), ))
+#mdb.models['Model-1'].Material(name='Pore')
+#mdb.models['Model-1'].materials['Pore'].Conductivity(table=((cond_pore_var,), ))
 mdb.models['Model-1'].Material(name='Fiber')
 mdb.models['Model-1'].materials['Fiber'].Conductivity(table=((cond_fib_var,), ))
 
