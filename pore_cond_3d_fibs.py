@@ -1,7 +1,7 @@
-#import os
-#print('this is the env variable:', os.environ['tt'])
-#tts=os.environ['tt']
-#tt=float(tts)
+import os
+print('this is the env variable:', os.environ['tt'])
+tts=os.environ['tt']
+tt=float(tts)
 #mat_vol=float(os.environ['mat_vol'])
 #pore_vol=float(os.environ['pr_vol'])
 
@@ -81,21 +81,22 @@ mdb.models['Model-1'].parts['Part-1'].BaseSolidExtrude(depth=D, sketch= mdb.mode
 
 ###############################################################################
 # make fibers
-k=0
+p = mdb.models['Model-1'].parts['Part-1']
+f1, e1, d2 = p.faces, p.edges, p.datums
+t = p.MakeSketchTransform(sketchPlane=f1.findAt(coordinates=(W/2.0, H/2.0, D)), sketchUpEdge=e1.findAt(
+coordinates=(W, H/2.0, 0.0)), sketchPlaneSide=SIDE1,origin=(0.0, 0.0, 0.0))
+s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=2.82, gridSpacing=0.07, transform=t)
+s.setPrimaryObject(option=SUPERIMPOSE)
+p = mdb.models['Model-1'].parts['Part-1']
+p.projectReferencesOntoSketch(sketch=s, filter=COPLANAR_EDGES)
 for i in xrange(N_fiber):
-    p = mdb.models['Model-1'].parts['Part-1']
-    f1, e1, d2 = p.faces, p.edges, p.datums
-    t = p.MakeSketchTransform(sketchPlane=f1.findAt(coordinates=(W/2.0, H/2.0,D)), sketchUpEdge=e1.findAt(
-    coordinates=(W, H/2.0, D)), sketchPlaneSide=SIDE1,origin=(0.0,0.0,D))
-    s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=2.82, gridSpacing=0.07, transform=t)
-    s.setPrimaryObject(option=SUPERIMPOSE)
-    mdb.models['Model-1'].parts['Part-1'].projectReferencesOntoSketch(filter= COPLANAR_EDGES, sketch=s)
-    s.EllipseByCenterPerimeter(center=(ctr[i][0], ctr[i][1]), axisPoint1=(pt1[i][0],pt1[i][1]), axisPoint2=(pt2[i][0],pt2[i][1]))
-    f = p.faces
-    pickedFaces = f.findAt(((0.0, 0.0, D), ))
-    p.PartitionFaceBySketch(faces=pickedFaces, sketch=s)
-    p.PartitionCellBySweepEdge(cells= p.cells[k],edges=(p.edges.findAt(coordinates=(pt1[i][0],pt1[i][1],D)),), sweepPath= p.edges.findAt(coordinates=(0.0,0.0,D/2.0)) )
-    k=k+1
+	s.EllipseByCenterPerimeter(center=(ctr[i][0], ctr[i][1]), axisPoint1=(pt1[i][0],pt1[i][1]), axisPoint2=(pt2[i][0],pt2[i][1]))
+f = p.faces
+pickedFaces = f.findAt(((0.0, 0.0, D), ))
+p.PartitionFaceBySketch(faces=pickedFaces, sketch=s)
+for i in xrange(N_fiber):
+	p.PartitionCellBySweepEdge(cells= p.cells.findAt(coordinates=(0.0,0.0,D)),edges=(p.edges.findAt(coordinates=(pt2[i][0],pt2[i][1],D)),), sweepPath= p.edges.findAt(coordinates=(0.0,0.0,D/2.0)) )
+
 
 mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 
