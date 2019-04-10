@@ -97,6 +97,7 @@ for i in xrange(N_fiber):
     p.PartitionCellBySweepEdge(cells= p.cells[k],edges=(p.edges.findAt(coordinates=(pt1[i][0],pt1[i][1],D)),), sweepPath= p.edges.findAt(coordinates=(0.0,0.0,D/2.0)) )
     k=k+1
 
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 
 ######################################################################
 
@@ -118,8 +119,6 @@ p.Set(faces=faces, name='Matrix')
 
 # Create a set of the fibers
 
-
-# Create a set of the pores
 p = mdb.models['Model-1'].parts['Part-1']
 f = p.faces
 faces = f.findAt(((ctr[N_fiber+1][0],ctr[N_fiber+1][1],0.0), ) )
@@ -127,7 +126,7 @@ for i in xrange(N_fiber):
     faces += f.findAt(((ctr[i][0],ctr[i][1],0.0), ) )
 p.Set(faces=faces, name='Fiber')
 
-
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 
 
 ####################################################################
@@ -182,6 +181,7 @@ a.generateMesh(regions=partInstances)
 
 ###################################################################################
 
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 
 # Use after generating mesh
 
@@ -324,6 +324,7 @@ val3 = keys[2]
 dummy=(r1[val3], )
 a.Set(referencePoints=dummy, name='dummy F-B')
 
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 ###############################################################################
 # Applying constraint equations
 #Apply constraint equation to each corresponding node for Periodic Boundary Condition (left to right faces, x faces)
@@ -373,7 +374,7 @@ mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
 region=region, amplitude=UNSET, fixed=OFF,
 distributionType=UNIFORM, fieldName='', magnitude=0.0)
 
-
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 
 #######################################################################################
 
