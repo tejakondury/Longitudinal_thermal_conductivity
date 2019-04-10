@@ -122,8 +122,8 @@ p.Set(faces=faces, name='Matrix')
 
 p = mdb.models['Model-1'].parts['Part-1']
 f = p.faces
-faces = f.findAt(((ctr[N_fiber+1][0],ctr[N_fiber+1][1],0.0), ) )
-for i in xrange(N_fiber):
+faces = f.findAt(((ctr[0][0],ctr[0][1],0.0), ) )
+for i in xrange(1,N_fiber):
     faces += f.findAt(((ctr[i][0],ctr[i][1],0.0), ) )
 p.Set(faces=faces, name='Fiber')
 
@@ -143,7 +143,7 @@ thicknessAssignment=FROM_SECTION)
 p = mdb.models['Model-1'].parts['Part-1']
 region = p.sets['Fiber']
 p = mdb.models['Model-1'].parts['Part-1']
-p.SectionAssignment(region=region, sectionName='Section-3', offset=0.0,
+p.SectionAssignment(region=region, sectionName='Section-2', offset=0.0,
 offsetType=MIDDLE_SURFACE, offsetField='',
 thicknessAssignment=FROM_SECTION)
 #################################################################################
