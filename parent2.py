@@ -13,8 +13,8 @@ mat_vol=np.zeros(len)
 for i in xrange(len):
     tt[i]=data1[i][0]
     k[i]=data1[i][1]
-    kmax[i]=data1[i][2]
-    kmin[i]=data1[i][3]
+    #kmax[i]=data1[i][2]
+    #kmin[i]=data1[i][3]
 
 for i in xrange(1):
     tk=tt[i]
