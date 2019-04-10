@@ -18,7 +18,7 @@ for i in xrange(len):
 
 for i in xrange(1):
     tk=tt[i]
-    ratio=k[i]/mat_vol[i]
+    #ratio=k[i]/mat_vol[i]
    #norm=ratio*(0.5-pore_vol[i])
     norm=k[i]
     f=open('norm%d'%tk,'w')

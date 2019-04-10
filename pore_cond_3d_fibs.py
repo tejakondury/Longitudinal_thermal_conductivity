@@ -1,10 +1,9 @@
- import os
- print('this is the env variable:', os.environ['tt'])
-#
- tts=os.environ['tt']
- tt=float(tts)
- mat_vol=float(os.environ['mat_vol'])
- pore_vol=float(os.environ['pr_vol'])
+import os
+print('this is the env variable:', os.environ['tt'])
+tts=os.environ['tt']
+tt=float(tts)
+mat_vol=float(os.environ['mat_vol'])
+pore_vol=float(os.environ['pr_vol'])
 
 # Abaqus modules
 from abaqus import *
@@ -41,9 +40,9 @@ ctr = np.zeros(shape=(len(data1),3))
 pt1 = np.zeros(shape=(len(data1),3))
 pt2 = np.zeros(shape=(len(data1),3))
 for i in xrange(len(data1)):
-	ctr[i]=data1[i][0:3]
-	pt1[i]=data1[i][3:6]
-	pt2[i]=data1[i][6:9]
+ctr[i]=data1[i][0:3]
+pt1[i]=data1[i][3:6]
+pt2[i]=data1[i][6:9]
 
 
 data2 = np.loadtxt('packing_info2' + '.txt',skiprows=0)
@@ -60,16 +59,16 @@ N=N_fiber+N_pore
 flag=1
 
 # Create material properties
- mdb.models['Model-1'].Material(name='Matrix')
- mdb.models['Model-1'].materials['Matrix'].Conductivity(table=((cond_mat_var,), ))
- mdb.models['Model-1'].Material(name='Pore')
- mdb.models['Model-1'].materials['Pore'].Conductivity(table=((cond_pore_var,), ))
- mdb.models['Model-1'].Material(name='Fiber')
- mdb.models['Model-1'].materials['Fiber'].Conductivity(table=((cond_fib_var,), ))
+mdb.models['Model-1'].Material(name='Matrix')
+mdb.models['Model-1'].materials['Matrix'].Conductivity(table=((cond_mat_var,), ))
+mdb.models['Model-1'].Material(name='Pore')
+mdb.models['Model-1'].materials['Pore'].Conductivity(table=((cond_pore_var,), ))
+mdb.models['Model-1'].Material(name='Fiber')
+mdb.models['Model-1'].materials['Fiber'].Conductivity(table=((cond_fib_var,), ))
 
 # Make a cube
 s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__',
-    sheetSize=200.0)
+sheetSize=200.0)
 g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
 # RVE Geometry
 H=1.0
@@ -77,26 +76,26 @@ W=1.0
 D=1.0
 s.rectangle(point1=(0.0, 0.0), point2=(W, H))
 p = mdb.models['Model-1'].Part(name='Part-1', dimensionality=THREE_D,
-    type=DEFORMABLE_BODY)
+type=DEFORMABLE_BODY)
 mdb.models['Model-1'].parts['Part-1'].BaseSolidExtrude(depth=D, sketch= mdb.models['Model-1'].sketches['__profile__'])
 
 ###############################################################################
 # make fibers
 k=0
 for i in xrange(N_fiber):
-	p = mdb.models['Model-1'].parts['Part-1']
-	f1, e1, d2 = p.faces, p.edges, p.datums
-	t = p.MakeSketchTransform(sketchPlane=f1.findAt(coordinates=(W/2.0, H/2.0,D)), sketchUpEdge=e1.findAt(
-	coordinates=(W, H/2.0, D)), sketchPlaneSide=SIDE1,origin=(0.0,0.0,D))
-	s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=2.82, gridSpacing=0.07, transform=t)
-	s.setPrimaryObject(option=SUPERIMPOSE)
-	mdb.models['Model-1'].parts['Part-1'].projectReferencesOntoSketch(filter= COPLANAR_EDGES, sketch=s)
-	s.EllipseByCenterPerimeter(center=(ctr[i][0], ctr[i][1]), axisPoint1=(pt1[i][0],pt1[i][1]), axisPoint2=(pt2[i][0],pt2[i][1]))
-	f = p.faces
-	pickedFaces = f.findAt(((0.0, 0.0, D), ))
-	p.PartitionFaceBySketch(faces=pickedFaces, sketch=s)
-	p.PartitionCellBySweepEdge(cells= p.cells[k],edges=(p.edges.findAt(coordinates=(pt1[i][0],pt1[i][1],D)),), sweepPath= p.edges.findAt(coordinates=(0.0,0.0,D/2.0)) )
-	k=k+1
+    p = mdb.models['Model-1'].parts['Part-1']
+    f1, e1, d2 = p.faces, p.edges, p.datums
+    t = p.MakeSketchTransform(sketchPlane=f1.findAt(coordinates=(W/2.0, H/2.0,D)), sketchUpEdge=e1.findAt(
+    coordinates=(W, H/2.0, D)), sketchPlaneSide=SIDE1,origin=(0.0,0.0,D))
+    s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=2.82, gridSpacing=0.07, transform=t)
+    s.setPrimaryObject(option=SUPERIMPOSE)
+    mdb.models['Model-1'].parts['Part-1'].projectReferencesOntoSketch(filter= COPLANAR_EDGES, sketch=s)
+    s.EllipseByCenterPerimeter(center=(ctr[i][0], ctr[i][1]), axisPoint1=(pt1[i][0],pt1[i][1]), axisPoint2=(pt2[i][0],pt2[i][1]))
+    f = p.faces
+    pickedFaces = f.findAt(((0.0, 0.0, D), ))
+    p.PartitionFaceBySketch(faces=pickedFaces, sketch=s)
+    p.PartitionCellBySweepEdge(cells= p.cells[k],edges=(p.edges.findAt(coordinates=(pt1[i][0],pt1[i][1],D)),), sweepPath= p.edges.findAt(coordinates=(0.0,0.0,D/2.0)) )
+    k=k+1
 
 
 ######################################################################
@@ -104,9 +103,9 @@ for i in xrange(N_fiber):
 # Create sections
 
 mdb.models['Model-1'].HomogeneousSolidSection(name='Section-1',
-     material='Matrix', thickness=None)
+material='Matrix', thickness=None)
 mdb.models['Model-1'].HomogeneousSolidSection(name='Section-2',
-     material='Fiber', thickness=None)
+material='Fiber', thickness=None)
 
 
 ######################################################################
@@ -125,7 +124,7 @@ p = mdb.models['Model-1'].parts['Part-1']
 f = p.faces
 faces = f.findAt(((ctr[N_fiber+1][0],ctr[N_fiber+1][1],0.0), ) )
 for i in xrange(N_fiber):
-	faces += f.findAt(((ctr[i][0],ctr[i][1],0.0), ) )
+    faces += f.findAt(((ctr[i][0],ctr[i][1],0.0), ) )
 p.Set(faces=faces, name='Fiber')
 
 
@@ -137,16 +136,16 @@ p = mdb.models['Model-1'].parts['Part-1']
 region = p.sets['Matrix']
 p = mdb.models['Model-1'].parts['Part-1']
 p.SectionAssignment(region=region, sectionName='Section-1', offset=0.0,
-    offsetType=MIDDLE_SURFACE, offsetField='',
-    thicknessAssignment=FROM_SECTION)
+offsetType=MIDDLE_SURFACE, offsetField='',
+thicknessAssignment=FROM_SECTION)
 
 
 p = mdb.models['Model-1'].parts['Part-1']
 region = p.sets['Fiber']
 p = mdb.models['Model-1'].parts['Part-1']
 p.SectionAssignment(region=region, sectionName='Section-3', offset=0.0,
-    offsetType=MIDDLE_SURFACE, offsetField='',
-    thicknessAssignment=FROM_SECTION)
+offsetType=MIDDLE_SURFACE, offsetField='',
+thicknessAssignment=FROM_SECTION)
 #################################################################################
 
 
@@ -176,7 +175,7 @@ a.setElementType(regions=pickedRegions,elemTypes=(elemType1,elemType2))
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['Part-1-1'], )
 a.seedPartInstance(regions=partInstances, size=0.01,
-    minSizeFactor=0.1)
+minSizeFactor=0.1)
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['Part-1-1'], )
 a.generateMesh(regions=partInstances)
@@ -210,7 +209,7 @@ a.Set(faces=faces6,name='front-face')
 
 ################################################################################
 #Create individual nodes from the set
-    # left face
+# left face
 n1 = []
 for i in a.sets['left-face'].nodes:
     n1.append((i.coordinates[0],i.coordinates[1],i.coordinates[2],i.label))
@@ -222,7 +221,7 @@ for i in n1:
     nodeset = a.SetFromNodeLabels(name = setName,nodeLabels = (('Part-1-1', (i[3],),),),)
     nodeno1 += 1
 
-    # right side
+# right side
 n2 = []
 for i in a.sets['right-face'].nodes:
     n2.append((i.coordinates[0],i.coordinates[1],i.coordinates[2],i.label))
@@ -235,7 +234,7 @@ for i in n2:
     nodeset = a.SetFromNodeLabels(name = setName,nodeLabels = (('Part-1-1', (i[3],),),),)
     nodeno2 += 1
 
-    #top
+#top
 n3 = []
 for i in a.sets['top-face'].nodes:
     n3.append((i.coordinates[0],i.coordinates[1],i.coordinates[2],i.label))
@@ -247,7 +246,7 @@ for i in n3:
     nodeset = a.SetFromNodeLabels(name = setName,nodeLabels = (('Part-1-1', (i[3],),),),)
     nodeno3 += 1
 
-    #bottom
+#bottom
 n4 = []
 for i in a.sets['bottom-face'].nodes:
     n4.append((i.coordinates[0],i.coordinates[1],i.coordinates[2],i.label))
@@ -272,7 +271,7 @@ for i in n5:
     nodeset = a.SetFromNodeLabels(name = setName,nodeLabels = (('Part-1-1', (i[3],),),),)
     nodeno5 += 1
 
-    #back face
+#back face
 n6 = []
 for i in a.sets['back-face'].nodes:
     n6.append((i.coordinates[0],i.coordinates[1],i.coordinates[2],i.label))
@@ -290,7 +289,7 @@ for i in n6:
 a = mdb.models['Model-1'].rootAssembly
 a.ReferencePoint(point=(-W/2.0,H/2.0,D/2.0))
 mdb.models['Model-1'].rootAssembly.features.changeKey(fromName='RP-1',
-    toName='dummy L-R')
+toName='dummy L-R')
 
 # Create a set of dummy node
 r1 = a.referencePoints
@@ -303,7 +302,7 @@ a.Set(referencePoints=dummy, name='dummy L-R')
 a = mdb.models['Model-1'].rootAssembly
 a.ReferencePoint(point=(W/2.0,-H/2.0, D/2.0))
 mdb.models['Model-1'].rootAssembly.features.changeKey(fromName='RP-1',
-    toName='dummy T-B')
+toName='dummy T-B')
 # Create a set
 r1 = a.referencePoints
 keys = r1.keys()
@@ -316,7 +315,7 @@ a.Set(referencePoints=dummy, name='dummy T-B')
 a = mdb.models['Model-1'].rootAssembly
 a.ReferencePoint(point=(W/2.0,H/2.0,-D/2.0))
 mdb.models['Model-1'].rootAssembly.features.changeKey(fromName='RP-1',
-    toName='dummy F-B')
+toName='dummy F-B')
 
 # Create a set of dummy node
 r1 = a.referencePoints
@@ -354,8 +353,8 @@ r1 = a.referencePoints
 refPoints1=dummy=(r1[val3], )                                        # applying on the Front-Back face
 region = regionToolset.Region(referencePoints=refPoints1)
 mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
-    region=region, amplitude=UNSET, fixed=OFF,
-    distributionType=UNIFORM, fieldName='', magnitude=100.0)
+region=region, amplitude=UNSET, fixed=OFF,
+distributionType=UNIFORM, fieldName='', magnitude=100.0)
 
 
 a = mdb.models['Model-1'].rootAssembly
@@ -363,16 +362,16 @@ r1 = a.referencePoints
 refPoints1=dummy=(r1[val1], )                                        # applying on the Left-Right face
 region = regionToolset.Region(referencePoints=refPoints1)
 mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
-    region=region, amplitude=UNSET, fixed=OFF,
-    distributionType=UNIFORM, fieldName='', magnitude=0.0)
+region=region, amplitude=UNSET, fixed=OFF,
+distributionType=UNIFORM, fieldName='', magnitude=0.0)
 
 a = mdb.models['Model-1'].rootAssembly
 r1 = a.referencePoints
 refPoints1=dummy=(r1[val2], )                                        # applying on the Top-Bottom face
 region = regionToolset.Region(referencePoints=refPoints1)
 mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
-    region=region, amplitude=UNSET, fixed=OFF,
-    distributionType=UNIFORM, fieldName='', magnitude=0.0)
+region=region, amplitude=UNSET, fixed=OFF,
+distributionType=UNIFORM, fieldName='', magnitude=0.0)
 
 
 
@@ -380,14 +379,14 @@ mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
 
 # Create a job
 mdb.Job(name='Job%d'%tt, model='Model-1', description='', type=ANALYSIS,
-    atTime=None, waitMinutes=0, waitHours=0, queue=None, memory=90,
-    memoryUnits=PERCENTAGE, getMemoryFromAnalysis=True,
-    explicitPrecision=SINGLE, nodalOutputPrecision=SINGLE, echoPrint=OFF,
-    modelPrint=OFF, contactPrint=OFF, historyPrint=OFF, userSubroutine='',
-    scratch='', multiprocessingMode=DEFAULT, numCpus=1, numGPUs=0)
+atTime=None, waitMinutes=0, waitHours=0, queue=None, memory=90,
+memoryUnits=PERCENTAGE, getMemoryFromAnalysis=True,
+explicitPrecision=SINGLE, nodalOutputPrecision=SINGLE, echoPrint=OFF,
+modelPrint=OFF, contactPrint=OFF, historyPrint=OFF, userSubroutine='',
+scratch='', multiprocessingMode=DEFAULT, numCpus=1, numGPUs=0)
 #mdb.jobs['Job-1'].setValues(multiprocessingMode=MPI,numCpus=3, numDomains=3)
 mdb.models['Model-1'].FieldOutputRequest(name='F-Output-2',
-    createStepName='Step-1', variables=('IVOL', ))
+createStepName='Step-1', variables=('IVOL', ))
 
 mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 ###########################################################################################
