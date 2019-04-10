@@ -40,9 +40,9 @@ ctr = np.zeros(shape=(len(data1),3))
 pt1 = np.zeros(shape=(len(data1),3))
 pt2 = np.zeros(shape=(len(data1),3))
 for i in xrange(len(data1)):
-ctr[i]=data1[i][0:3]
-pt1[i]=data1[i][3:6]
-pt2[i]=data1[i][6:9]
+    ctr[i]=data1[i][0:3]
+    pt1[i]=data1[i][3:6]
+    pt2[i]=data1[i][6:9]
 
 
 data2 = np.loadtxt('packing_info2' + '.txt',skiprows=0)
