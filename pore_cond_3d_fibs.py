@@ -2,8 +2,8 @@ import os
 print('this is the env variable:', os.environ['tt'])
 tts=os.environ['tt']
 tt=float(tts)
-mat_vol=float(os.environ['mat_vol'])
-pore_vol=float(os.environ['pr_vol'])
+#mat_vol=float(os.environ['mat_vol'])
+#pore_vol=float(os.environ['pr_vol'])
 
 # Abaqus modules
 from abaqus import *
