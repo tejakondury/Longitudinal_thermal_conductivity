@@ -167,7 +167,7 @@ f1 =a.instances['Part-1-1'].faces
 #faces1=f1.findAt(((0.0,0.0,0.0),),((0.2,0.2,0.0),),((0.8,0.2,0.0),),((0.2,0.7,0.0),))
 faces1 = f1.getByBoundingBox(0.0,0.0,0.0, 1.0, 1.0, 0.0) # (xmin, ymin, zmin, xmax, ymax, zmax) make this so these will adjust with the RVE size
 pickedRegions=(faces1,)
-a.setElementType(regions=pickedRegions,elemTypes=(elemType1))
+a.setElementType(regions=pickedRegions,elemTypes=(elemType1,))
 
 ##################################################################################
 
