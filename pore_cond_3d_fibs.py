@@ -18,28 +18,24 @@ import pickle as pk
 
 # get initial data
 from __main__ import *
-# read conductivity values from ref space
- f=open('cond-mat%d' %tt,'rb')
- cond_mat_var=pk.load(f)
- f.close()
-#
- f=open('cond-fib%d' %tt,'rb')
- cond_fib_var=pk.load(f)
- f.close()
-#
- f=open('cond-pore%d' %tt,'rb')
- cond_pore_var=pk.load(f)
- f.close()
+# read conductivity values from previous step
+f=open('norm%d'%tt,'r')
+cond_mat_var=f.read()
+cond_mat_var=float(cond_mat_var)
+f.close()
 
+f=open('fib-cond%d'%tt,'r')
+cond_fib_var=f.read()
+cond_fib_var=float(cond_fib_var)
+f.close()
 
-# read coordinate values from reference space
 
 Mdb
 
 ##############################################################
 # Read from packing data
 # import data1 and create arrays
-data1 = np.loadtxt('ellipse_positions' + '.txt',skiprows=2)
+data1 = np.loadtxt('ellipse_positions2' + '.txt',skiprows=2)
 print data1
 ctr = np.zeros(shape=(len(data1),3))
 pt1 = np.zeros(shape=(len(data1),3))
@@ -50,7 +46,7 @@ for i in xrange(len(data1)):
 	pt2[i]=data1[i][6:9]
 
 
-data2 = np.loadtxt('packing_info' + '.txt',skiprows=0)
+data2 = np.loadtxt('packing_info2' + '.txt',skiprows=0)
 print data2
 N_fiber = int(data2[0])
 N_pore = int(data2[2])
@@ -58,20 +54,6 @@ N=N_fiber+N_pore
 
 
 
-data3=np.loadtxt('yy%d'%tt,skiprows=0)
-
-
-pt1s=np.zeros(shape=(N_pore,3))
-pt2s=np.zeros(shape=(N_pore,3))
-
-
-for k in range(N_pore):
-    pt1s[k][0]=data3[k][0]
-    pt1s[k][1]=data3[k][1]
-    pt1s[k][2]=0.5
-    pt2s[k][0]=data3[k][2]
-    pt2s[k][1]=data3[k][3]
-    pt2s[k][2]=0.5
 
 ########################################################################3
 
@@ -89,6 +71,7 @@ flag=1
 s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__',
     sheetSize=200.0)
 g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
+# RVE Geometry
 H=1.0
 W=1.0
 D=1.0
@@ -98,7 +81,7 @@ p = mdb.models['Model-1'].Part(name='Part-1', dimensionality=THREE_D,
 mdb.models['Model-1'].parts['Part-1'].BaseSolidExtrude(depth=D, sketch= mdb.models['Model-1'].sketches['__profile__'])
 
 ###############################################################################
-# make pores
+# make fibers
 k=0
 for i in xrange(N_fiber):
 	p = mdb.models['Model-1'].parts['Part-1']
@@ -324,7 +307,7 @@ mdb.models['Model-1'].rootAssembly.features.changeKey(fromName='RP-1',
 # Create a set
 r1 = a.referencePoints
 keys = r1.keys()
-val2 = keys[0]
+val2 = keys[1]
 dummy=(r1[val2], )
 a.Set(referencePoints=dummy, name='dummy T-B')
 
@@ -338,7 +321,7 @@ mdb.models['Model-1'].rootAssembly.features.changeKey(fromName='RP-1',
 # Create a set of dummy node
 r1 = a.referencePoints
 keys = r1.keys()
-val3 = keys[0]
+val3 = keys[2]
 dummy=(r1[val3], )
 a.Set(referencePoints=dummy, name='dummy F-B')
 
@@ -368,13 +351,28 @@ mdb.models['Model-1'].HeatTransferStep(name='Step-1', previous='Initial',respons
 # Apply boundary conditions on dummy nodes
 a = mdb.models['Model-1'].rootAssembly
 r1 = a.referencePoints
-refPoints1=dummy=(r1[val1], )
+refPoints1=dummy=(r1[val3], )                                        # applying on the Front-Back face
 region = regionToolset.Region(referencePoints=refPoints1)
 mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
     region=region, amplitude=UNSET, fixed=OFF,
     distributionType=UNIFORM, fieldName='', magnitude=100.0)
 
 
+a = mdb.models['Model-1'].rootAssembly
+r1 = a.referencePoints
+refPoints1=dummy=(r1[val1], )                                        # applying on the Left-Right face
+region = regionToolset.Region(referencePoints=refPoints1)
+mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
+    region=region, amplitude=UNSET, fixed=OFF,
+    distributionType=UNIFORM, fieldName='', magnitude=0.0)
+
+a = mdb.models['Model-1'].rootAssembly
+r1 = a.referencePoints
+refPoints1=dummy=(r1[val2], )                                        # applying on the Top-Bottom face
+region = regionToolset.Region(referencePoints=refPoints1)
+mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
+    region=region, amplitude=UNSET, fixed=OFF,
+    distributionType=UNIFORM, fieldName='', magnitude=0.0)
 
 
 
@@ -419,7 +417,7 @@ comp=0;
 totVol = 0.0
 totFlux=0.0
 totTemp=0.0
-gradt=500.0
+gradt=100.0
 for j in xrange(0,len(vol.values)):
     setVol = vol.values[j].data
     totVol += setVol
@@ -429,6 +427,6 @@ totFlux=totFlux/totVol
 K_eff=(totFlux/gradt)
 
 
-f=open('results_therm_cond','a')
+f=open('results_homogenized_composite_avg','a')
 f.write(str(tt)+' '+str(K_eff)+' '+str(pore_vol)+' '+str(1-pore_vol) + "\n")
 f.close()

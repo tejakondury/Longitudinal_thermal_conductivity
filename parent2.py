@@ -2,7 +2,7 @@ import os
 import subprocess
 import numpy as np
 
-data1=np.loadtxt('results_therm_cond_5')
+data1=np.loadtxt('stat_mat_output')
 len=len(data1)
 
 tt=np.zeros(len)
@@ -13,20 +13,20 @@ mat_vol=np.zeros(len)
 for i in xrange(len):
     tt[i]=data1[i][0]
     k[i]=data1[i][1]
-    pore_vol[i]=data1[i][2]
-    mat_vol[i]=data1[i][3]
+    kmax[i]=data1[i][2]
+    kmin[i]=data1[i][3]
 
-for i in xrange(len):
+for i in xrange(1):
     tk=tt[i]
     ratio=k[i]/mat_vol[i]
    #norm=ratio*(0.5-pore_vol[i])
-    norm=k[i]	
+    norm=k[i]
     f=open('norm%d'%tk,'w')
     f.write(str(norm))
     f.close()
 
     f=open('fib-cond%d'%tk,'w')
-    dummy=1.8
+    dummy=6.83                         # hardcoded fiber conductivity here
     #dummy=np.sqrt((tk/theta_0))*6.83
     f.write(str(dummy))
     f.close()
@@ -48,13 +48,13 @@ for i in xrange(len):
     f.write("\n")
     f.write("#PBS -l place=free:shared")
     f.write("\n")
-    f.write("#PBS -l walltime=00:30:00")
+    f.write("#PBS -l walltime=00:10:00")
     f.write("\n")
-    f.write("#PBS -l cput=00:30:00")
+    f.write("#PBS -l cput=00:10:00")
     f.write("\n")
-    f.write("cd /home/u23/tejakondury/SAPHYR3")
+    f.write("cd /home/u23/tejakondury/RUBY1")
     f.write("\n")
-    f.write("abaqus cae noGUI=no_pore_2step.py ")
+    f.write("abaqus cae noGUI=pore_cond_3d_fibs.py ")
     f.close()
 
     os.environ['tt']=str(tk)
