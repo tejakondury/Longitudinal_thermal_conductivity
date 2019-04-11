@@ -114,21 +114,20 @@ material='Fiber', thickness=None)
 
 # Create sets
 p = mdb.models['Model-1'].parts['Part-1']
-f = p.faces
+f = p.cells
 faces = f.findAt(((0.0, 0.0, 0.0), ))
-p.Set(faces=faces, name='Matrix')
+p.Set(cells=faces, name='Matrix')
 
 # Create a set of the fibers
 
 p = mdb.models['Model-1'].parts['Part-1']
-f = p.faces
-faces = f.findAt(((ctr[0][0],ctr[0][1],0.0), ) )
+c = p.cells
+cells = c.findAt(((ctr[0][0],ctr[0][1],D/2.0), ) )
 for i in xrange(1,N_fiber):
-    faces += f.findAt(((ctr[i][0],ctr[i][1],0.0), ) )
-p.Set(faces=faces, name='Fiber')
+    cells += c.findAt(((ctr[i][0],ctr[i][1],D/2.0), ) )
+p.Set(cells=cells, name='Fiber')
 
 mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
-
 
 ####################################################################
 # Assign sections
@@ -163,9 +162,9 @@ elemType1=mesh.ElemType(elemCode=DC3D4,elemLibrary=STANDARD)
 #elemType2=mesh.ElemType(elemCode=DC2D3,elemLibrary=STANDARD)
 p=mdb.models['Model-1'].parts['Part-1']
 a = mdb.models['Model-1'].rootAssembly
-f1 =a.instances['Part-1-1'].faces
+c1 =a.instances['Part-1-1'].cells
 #faces1=f1.findAt(((0.0,0.0,0.0),),((0.2,0.2,0.0),),((0.8,0.2,0.0),),((0.2,0.7,0.0),))
-faces1 = f1.getByBoundingBox(0.0,0.0,0.0, 1.0, 1.0, 0.0) # (xmin, ymin, zmin, xmax, ymax, zmax) make this so these will adjust with the RVE size
+faces1 = c1.getByBoundingBox(0.0,0.0,0.0, 1.0, 1.0, 1.0) # (xmin, ymin, zmin, xmax, ymax, zmax) make this so these will adjust with the RVE size
 pickedRegions=(faces1,)
 a.setElementType(regions=pickedRegions,elemTypes=(elemType1,))
 
@@ -202,10 +201,10 @@ a.Set(faces=faces3, name='top-face')
 faces4=f1.findAt(((W/2.0,0.0,D/2.0),))
 a.Set(faces=faces4,name='bottom-face')
 
-faces5=f1.findAt(((W/2.0,H/2.0,0.0),))
+faces5=f1.getByBoundingBox(0.0,0.0,0.0,W,H,0.0)
 a.Set(faces=faces5,name='back-face')
 
-faces6=f1.findAt(((W/2.0,H/2.0,D),))
+faces6=f1.getByBoundingBox(0.0,0.0,D,W,H,D)
 a.Set(faces=faces6,name='front-face')
 
 ################################################################################
