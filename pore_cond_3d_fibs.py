@@ -173,7 +173,7 @@ a.setElementType(regions=pickedRegions,elemTypes=(elemType1,))
 # Generate mesh
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['Part-1-1'], )
-a.seedPartInstance(regions=partInstances, size=0.01,
+a.seedPartInstance(regions=partInstances, size=0.1,
 minSizeFactor=0.1)
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['Part-1-1'], )
