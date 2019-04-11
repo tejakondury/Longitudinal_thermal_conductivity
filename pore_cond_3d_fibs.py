@@ -178,7 +178,7 @@ a.seedPartInstance(regions=partInstances, size=0.1,
 minSizeFactor=0.1)
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['Part-1-1'], )
-c1=partInstances.cells
+c1=a.instances['Part-1-1'].cells
 pickedregion=c1.getByBoundingBox(0.0,0.0,0.0,W,H,D)
 a.setMeshControls(regions=pickedregion,elemShape=HEX_DOMINATED)
 a.generateMesh(regions=partInstances)
