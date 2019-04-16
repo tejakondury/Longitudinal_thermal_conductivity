@@ -321,7 +321,7 @@ toName='dummy T-B')
 # Create a set
 r1 = a.referencePoints
 keys = r1.keys()
-val2 = keys[1]
+val2 = keys[0]
 dummy=(r1[val2], )
 a.Set(referencePoints=dummy, name='dummy T-B')
 
@@ -335,7 +335,7 @@ toName='dummy F-B')
 # Create a set of dummy node
 r1 = a.referencePoints
 keys = r1.keys()
-val3 = keys[2]
+val3 = keys[0]
 dummy=(r1[val3], )
 a.Set(referencePoints=dummy, name='dummy F-B')
 
