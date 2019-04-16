@@ -377,7 +377,7 @@ a = mdb.models['Model-1'].rootAssembly
 r1 = a.referencePoints
 refPoints1=dummy=(r1[val1], )                                        # applying on the Left-Right face
 region = regionToolset.Region(referencePoints=refPoints1)
-mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
+mdb.models['Model-1'].TemperatureBC(name='BC-2', createStepName='Step-1',
 region=region, amplitude=UNSET, fixed=OFF,
 distributionType=UNIFORM, fieldName='', magnitude=0.0)
 
@@ -385,7 +385,7 @@ a = mdb.models['Model-1'].rootAssembly
 r1 = a.referencePoints
 refPoints1=dummy=(r1[val2], )                                        # applying on the Top-Bottom face
 region = regionToolset.Region(referencePoints=refPoints1)
-mdb.models['Model-1'].TemperatureBC(name='BC-1', createStepName='Step-1',
+mdb.models['Model-1'].TemperatureBC(name='BC-3', createStepName='Step-1',
 region=region, amplitude=UNSET, fixed=OFF,
 distributionType=UNIFORM, fieldName='', magnitude=0.0)
 
