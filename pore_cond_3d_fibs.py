@@ -193,17 +193,22 @@ mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 
 a=mdb.models['Model-1'].rootAssembly
 f1=a.instances['Part-1-1'].faces
+e1=a.instances['Part-1-1'].edges
 faces1=f1.findAt(((0.0,H/2.0,D/2.0),))
-a.Set(faces=faces1,name='left-face')
+xe1=e1.findAt(((0.0,H/2.0,0.0),),((0.0,H/2.0,D),))
+a.Set(faces=faces1,xEdges=xe1,name='left-face')
 
 faces2=f1.findAt(((W,H/2.0,D/2.0),))
-a.Set(faces=faces2,name='right-face')
+xe1=e1.findAt(((W,H/2.0,0.0),),((W,H/2.0,D),))
+a.Set(faces=faces2,xEdges=xe1,name='right-face')
 
 faces3=f1.findAt(((W/2.0,H,D/2.0),))
-a.Set(faces=faces3, name='top-face')
+xe1=e1.findAt(((0.0,H,D/2.0),),((W/2.0,H,0.0),),((W,H,D/2.0),),((W/2.0,H,D),))
+a.Set(faces=faces3,xEdges=xe1, name='top-face')
 
 faces4=f1.findAt(((W/2.0,0.0,D/2.0),))
-a.Set(faces=faces4,name='bottom-face')
+xe1=e1.findAt(((0.0,0.0,D/2.0),),((W/2.0,0.0,0.0),),((W,0.0,D/2.0),),((W/2.0,0.0,D),))
+a.Set(faces=faces4,xEdges=xe1,name='bottom-face')
 
 faces5=f1.getByBoundingBox(0.0,0.0,0.0,W,H,0.0)
 a.Set(faces=faces5,name='back-face')
