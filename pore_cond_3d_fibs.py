@@ -194,21 +194,27 @@ mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d' %tt)
 a=mdb.models['Model-1'].rootAssembly
 f1=a.instances['Part-1-1'].faces
 e1=a.instances['Part-1-1'].edges
+v1=a.instances['Part-1-1'].vertices
+
 faces1=f1.findAt(((0.0,H/2.0,D/2.0),))
 xe1=e1.findAt(((0.0,H/2.0,0.0),),((0.0,H/2.0,D),))
-a.Set(faces=faces1,xEdges=xe1,name='left-face')
+xv1=v1.findAt(((0.0,H,0.0),),((0.0,H,D),),((0.0,0.0,0.0),),((0.0,0.0,D),))
+a.Set(faces=faces1,xEdges=xe1,xVertices=xv1,name='left-face')
 
 faces2=f1.findAt(((W,H/2.0,D/2.0),))
 xe1=e1.findAt(((W,H/2.0,0.0),),((W,H/2.0,D),))
-a.Set(faces=faces2,xEdges=xe1,name='right-face')
+xv1=v1.findAt(((W,H,0.0),),((W,H,D),),((W,0.0,0.0),),((W,0.0,D),))
+a.Set(faces=faces2,xEdges=xe1,xVertices=xv1,name='right-face')
 
 faces3=f1.findAt(((W/2.0,H,D/2.0),))
 xe1=e1.findAt(((0.0,H,D/2.0),),((W/2.0,H,0.0),),((W,H,D/2.0),),((W/2.0,H,D),))
-a.Set(faces=faces3,xEdges=xe1, name='top-face')
+xv1=v1.findAt(((0.0,H,0.0),),((0.0,H,D),),((W,H,0.0),),((W,H,D),))
+a.Set(faces=faces3,xEdges=xe1,xVertices=xv1, name='top-face')
 
 faces4=f1.findAt(((W/2.0,0.0,D/2.0),))
 xe1=e1.findAt(((0.0,0.0,D/2.0),),((W/2.0,0.0,0.0),),((W,0.0,D/2.0),),((W/2.0,0.0,D),))
-a.Set(faces=faces4,xEdges=xe1,name='bottom-face')
+xv1=v1.findAt(((0.0,0.0,0.0),),((0.0,0.0,D),),((W,0.0,0.0),),((W,0.0,D),))
+a.Set(faces=faces4,xEdges=xe1,xVertices=xv1,name='bottom-face')
 
 faces5=f1.getByBoundingBox(0.0,0.0,0.0,W,H,0.0)
 a.Set(faces=faces5,name='back-face')
@@ -437,5 +443,5 @@ K_eff=(totFlux/gradt)
 
 
 f=open('results_homogenized_composite_avg','a')
-f.write(str(tt)+' '+str(K_eff)+' '+str(pore_vol)+' '+str(1-pore_vol) + "\n")
+f.write(str(tt)+' '+str(K_eff)+ "\n")
 f.close()
