@@ -174,7 +174,7 @@ a.setElementType(regions=pickedRegions,elemTypes=(elemType1,))
 
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['Part-1-1'], )
-a.seedPartInstance(regions=partInstances, size=0.1,
+a.seedPartInstance(regions=partInstances, size=0.03,
 minSizeFactor=0.1)
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['Part-1-1'], )
@@ -428,7 +428,7 @@ vol = myodb.steps['Step-1'].frames[-1].fieldOutputs['IVOL']
 flux=myodb.steps['Step-1'].frames[-1].fieldOutputs['HFL']
 temp=myodb.steps['Step-1'].frames[-1].fieldOutputs['NT11']
 
-comp=0;
+comp=2;
 totVol = 0.0
 totFlux=0.0
 totTemp=0.0
