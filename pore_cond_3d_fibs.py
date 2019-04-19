@@ -442,6 +442,6 @@ totFlux=totFlux/totVol
 K_eff=(totFlux/gradt)
 
 
-f=open('results_homogenized_composite_avg','a')
+f=open('results_homogenized_composite_avg_1','a')
 f.write(str(tt)+' '+str(K_eff)+ "\n")
 f.close()
