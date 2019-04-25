@@ -16,7 +16,7 @@ for i in xrange(len):
     #kmax[i]=data1[i][2]
     #kmin[i]=data1[i][3]
 
-for i in xrange(1):
+for i in xrange(len):
     tk=tt[i]
     #ratio=k[i]/mat_vol[i]
    #norm=ratio*(0.5-pore_vol[i])

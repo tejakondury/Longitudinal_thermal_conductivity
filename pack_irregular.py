@@ -63,6 +63,8 @@ def pack_irregular(pore_vol,tt):
 
     for i in xrange(N_fiber,N):
         a_new_mod.append((pore_vol*R[i]/(N_pore*np.pi))**0.5)
+
+    for i in xrange(N_fiber, N):
         b_new_mod.append(a_new_mod[i]/R[i])
 
    # print ('a is' ,a_new_mod )
