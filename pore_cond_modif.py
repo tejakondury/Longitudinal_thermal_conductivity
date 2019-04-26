@@ -1,3 +1,11 @@
+import os
+print('this is the env variable:', os.environ['tt'])
+
+tts=os.environ['tt']
+tt=float(tts)
+
+
+
 # Script to generate the cae for 3d fibers
 from abaqus import *
 from abaqusConstants import *
@@ -10,6 +18,18 @@ import pickle as pk
 
 # get initial data
 from __main__ import *
+
+#from __main__ import *
+# read conductivity values from previous step
+f=open('norm%d'%tt,'r')
+cond_mat_var=f.read()
+cond_mat_var=float(cond_mat_var)
+f.close()
+
+f=open('fib-cond%d'%tt,'r')
+cond_fib_var=f.read()
+cond_fib_var=float(cond_fib_var)
+f.close()
 
 Mdb
 
@@ -152,7 +172,7 @@ a.setElementType(regions=pickedRegions,elemTypes=(elemType1,))
 
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['composite-1'], )
-a.seedPartInstance(regions=partInstances, size=0.03,
+a.seedPartInstance(regions=partInstances, size=0.02,
 minSizeFactor=0.1)
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['composite-1'], )
