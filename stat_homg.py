@@ -35,6 +35,7 @@ for q in range(len(temp)):   # cycliing through the tmep range
                 if r[k][i][1]>=max_val:
                     max_val=r[k][i][1]
 
+
     if obs!=0:
         avg_sum=cum_sum/obs
     else:
