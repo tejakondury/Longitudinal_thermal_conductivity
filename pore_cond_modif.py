@@ -79,6 +79,8 @@ g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
 s.CircleByCenterPerimeter(center=(0.0,0.0),point1=(rad_fib,0.0))
 mdb.models['Model-1'].parts['Fiber'].BaseSolidExtrude(depth=D, sketch= mdb.models['Model-1'].sketches['__profile__'])
 
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d'%tt)
+
 ###############################################################################
 # Creat Instances
 p = mdb.models['Model-1'].parts['Matrix']
@@ -104,13 +106,13 @@ a1 = mdb.models['Model-1'].rootAssembly
 a1.InstanceFromBooleanMerge(name='composite', instances=(all_inst),keepIntersections=ON,
         originalInstances=SUPPRESS, domain=GEOMETRY)
 
-
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d'%tt)
 
 # material properties
 mdb.models['Model-1'].Material(name='matrix')
-mdb.models['Model-1'].materials['matrix'].Conductivity(table=((0.2,), ))
+mdb.models['Model-1'].materials['matrix'].Conductivity(table=((cond_mat_var,), ))
 mdb.models['Model-1'].Material(name='fiber')
-mdb.models['Model-1'].materials['fiber'].Conductivity(table=((1.8,), ))
+mdb.models['Model-1'].materials['fiber'].Conductivity(table=((cond_fib_var,), ))
 
 # Sections
 # Create a fiber set for section assignment
@@ -172,7 +174,7 @@ a.setElementType(regions=pickedRegions,elemTypes=(elemType1,))
 
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['composite-1'], )
-a.seedPartInstance(regions=partInstances, size=0.02,
+a.seedPartInstance(regions=partInstances, size=0.03,
 minSizeFactor=0.1)
 a = mdb.models['Model-1'].rootAssembly
 partInstances =(a.instances['composite-1'], )
@@ -180,6 +182,8 @@ c1=a.instances['composite-1'].cells
 pickedregion=c1.getByBoundingBox(0.0,0.0,0.0,W,H,D)
 a.setMeshControls(regions=pickedregion,elemShape=HEX_DOMINATED,allowMapped=False)
 a.generateMesh(regions=partInstances)
+
+mdb.saveAs('/home/u23/tejakondury/RUBY1/mod%d'%tt)
 
 ##########################################################################
 
@@ -454,6 +458,6 @@ totFlux=totFlux/totVol
 K_eff=(totFlux/gradt)
 
 
-f=open('results_homogenized_composite_avg_1','a')
+f=open('results_homogenized_composite_avg_n_324','a')
 f.write(str(tt)+' '+str(K_eff)+ "\n")
 f.close()

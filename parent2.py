@@ -1,6 +1,7 @@
 import os
 import subprocess
 import numpy as np
+import time
 
 data1=np.loadtxt('stat_mat_output')
 len=len(data1)
@@ -42,19 +43,19 @@ for i in xrange(len):
     f.write("\n")
     f.write("#PBS -W group_list=oiz")
     f.write("\n")
-    f.write("#PBS -q standard")
+    f.write("#PBS -q debug")
     f.write("\n")
     f.write("#PBS -l select=1:ncpus=1:mem=6gb:pcmem=6gb")
     f.write("\n")
     f.write("#PBS -l place=free:shared")
     f.write("\n")
-    f.write("#PBS -l walltime=00:15:00")
+    f.write("#PBS -l walltime=00:10:00")
     f.write("\n")
-    f.write("#PBS -l cput=00:15:00")
+    f.write("#PBS -l cput=00:10:00")
     f.write("\n")
     f.write("cd /home/u23/tejakondury/RUBY1")
     f.write("\n")
-    f.write("abaqus cae noGUI=pore_cond_3d_fibs.py ")
+    f.write("abaqus cae noGUI=pore_cond_modif.py ")
     f.close()
 
     os.environ['tt']=str(tk)
@@ -62,3 +63,6 @@ for i in xrange(len):
     subprocess.call('qsub -v tt=$tt run_p.job',shell=True)
 
     print('analysis is submitted for temp',tk)
+    
+    time.sleep(45)
+	
